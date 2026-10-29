@@ -120,17 +120,20 @@ export async function requestFeedback(
     clearTimeout(timeoutId);
 
     if (res.ok) {
-      const data = await res.json();
-      return {
-        isSuccess: Boolean(data.isSuccess),
-        hasSmallError: Boolean(data.hasSmallError),
-        feedbackEnglish: data.feedbackEnglish || "Nice! Your reply fits the conversation naturally.",
-        feedbackKorean: data.feedbackKorean || "좋아요! 대화 맥락에 잘 맞는 자연스러운 답변이에요!",
-        correctedSentence: data.correctedSentence || turn.targetSentence,
-        firstLetterHint: data.firstLetterHint || turn.firstLetterHint,
-        chunkedPhrases: data.chunkedPhrases || turn.chunkedPhrases,
-        alternativeExpressions: data.alternativeExpressions || turn.alternativeExpressions,
-      };
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const data = await res.json();
+        return {
+          isSuccess: Boolean(data.isSuccess),
+          hasSmallError: Boolean(data.hasSmallError),
+          feedbackEnglish: data.feedbackEnglish || "Nice! Your reply fits the conversation naturally.",
+          feedbackKorean: data.feedbackKorean || "좋아요! 대화 맥락에 잘 맞는 자연스러운 답변이에요!",
+          correctedSentence: data.correctedSentence || turn.targetSentence,
+          firstLetterHint: data.firstLetterHint || turn.firstLetterHint,
+          chunkedPhrases: data.chunkedPhrases || turn.chunkedPhrases,
+          alternativeExpressions: data.alternativeExpressions || turn.alternativeExpressions,
+        };
+      }
     }
   } catch (err) {
     console.warn('API feedback request failed, falling back to Section 7 table rules:', err);

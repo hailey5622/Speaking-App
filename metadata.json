@@ -1,0 +1,6 @@
+{
+  "name": "Let's Be Friends - Meet and Speak",
+  "description": "An interactive English speaking practice app for university students to practice greetings and small talk with foreign friends.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
